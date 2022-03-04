@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
 import org.codehaus.mojo.versions.api.UpdateScope;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  *
@@ -40,6 +38,8 @@ public class UpgradableDependencies {
                     latest = null;
                 }
             }
+            
+            
         }
         
         
