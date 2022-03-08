@@ -16,6 +16,7 @@ import org.codehaus.mojo.versions.api.ArtifactVersions;
 import org.codehaus.mojo.versions.ordering.MavenVersionComparator;
 import org.codehaus.mojo.versions.ordering.VersionComparator;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -66,7 +67,7 @@ public class DependencyBuilder {
         return dependencies;
     }
 
-    private static Dependency mockDependency(String groupId, String artifactId, String version) {
+    public static Dependency mockDependency(String groupId, String artifactId, String version) {
         Dependency dep = mock(Dependency.class);
 
         // following mocks are not used and mockito complains
@@ -75,8 +76,6 @@ public class DependencyBuilder {
 //        when(dep.getVersion()).thenReturn(version);
         return dep;
     }
-
-    
         
     public static VersionRange versionRange(String versionOrRange) {
         VersionRange range = null;
@@ -88,16 +87,21 @@ public class DependencyBuilder {
         return range;
     }
     
-    private static ArtifactVersions mockVersions(String groupId, String artifactId, String... versions) {
+    public static ArtifactVersions mockVersions(String groupId, String artifactId, String... versions) {
         return mockVersions(groupId, artifactId, versionRange(versions[0]), versions);
     }
-    
-    private static ArtifactVersions mockVersions(String groupId, String artifactId, VersionRange range, String... versions) {
 
+    public static ArtifactVersions mockVersions(String groupId, String artifactId, VersionRange range, String... versions) {
         final Artifact artifact = new DefaultArtifact(
                 groupId, artifactId, range, "foo", "bar",
                 "jar", new DefaultArtifactHandler());
 
+        return new ArtifactVersions(artifact, createArticArtifactVersions(versions), versionComparator);
+    }
+    
+    public static ArtifactVersions mockVersionsWithMissingCurrentVersion(String groupId, String artifactId, String... versions) {
+        final Artifact artifact = mock(Artifact.class);
+    
         return new ArtifactVersions(artifact, createArticArtifactVersions(versions), versionComparator);
     }
 

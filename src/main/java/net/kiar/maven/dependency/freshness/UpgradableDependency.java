@@ -1,5 +1,7 @@
 package net.kiar.maven.dependency.freshness;
 
+import java.util.Arrays;
+import java.util.List;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
@@ -79,8 +81,45 @@ public class UpgradableDependency {
         this.usedVersion = usedVersion;
     }
     
+    
+    /**
+     * get all versions newer as the current used version
+     * @return 
+     */
+    public List<ArtifactVersion> getAllNewerVersions() {
+        if (usedVersion != null) {
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.ANY);
+            if (result != null && result.length > 0) {
+                return Arrays.asList(result);
+            }
+        }
+        return List.of();
+    }
+    
+    public List<ArtifactVersion> getAllNewerMajorVersions() {
+        if (usedVersion != null) {
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.MAJOR);
+            if (result != null && result.length > 0) {
+                return Arrays.asList(result);
+            }
+        }
+        return List.of();
+    }
+    
+    
+    /**
+     * 
+     * @return true if a usedVersion and a latestVersion are known. Both versions
+     * are not identical.
+     */
     public boolean isUpgradable() {
-        return true;
+        if (usedVersion == null) {
+            return false;
+        }
+        if (latestVersion == null) {
+            return false;
+        }
+        return !usedVersion.toString().equals( latestVersion.toString());
     }
     
     

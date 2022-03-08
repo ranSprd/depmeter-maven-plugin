@@ -1,5 +1,6 @@
 package net.kiar.maven.dependency.freshness;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.maven.model.Dependency;
@@ -11,17 +12,24 @@ import org.codehaus.mojo.versions.api.ArtifactVersions;
  */
 public class UpgradableDependencies {
     
+    private final List<UpgradableDependency> allDependencies;
     
     public static UpgradableDependencies select(Map<Dependency, ArtifactVersions> dependencies) {
         
-        dependencies.entrySet().stream()
+        List<UpgradableDependency> transformed = dependencies.entrySet().stream()
                 .map(entry -> UpgradableDependency.create(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
         
-        
-        
-        return new UpgradableDependencies();
+        return new UpgradableDependencies(transformed);
+    }
+    
+
+    public UpgradableDependencies(List<UpgradableDependency> list) {
+        this.allDependencies = list;
     }
 
+    public List<UpgradableDependency> getAllDependencies() {
+        return allDependencies;
+    }
     
 }
