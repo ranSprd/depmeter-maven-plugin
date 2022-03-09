@@ -1,5 +1,6 @@
 package net.kiar.maven.dependency.freshness.metric.calculators;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.codehaus.mojo.versions.ordering.MavenVersionComparator;
@@ -30,10 +31,14 @@ public class DriftScoreCalculator {
         if (used == null || newer == null || newer.isEmpty()) {
             return 0.0;
         }
+        
+        // sort the versions
+        List<ArtifactVersion> workList = new ArrayList<>(newer);
+        workList.sort( new MavenVersionComparator());
+        
         double driftScore = 0.0;
         ArtifactVersion start = used;
-        newer.sort(new MavenVersionComparator());
-        for(ArtifactVersion end : newer) {
+        for(ArtifactVersion end : workList) {
             driftScore += driftScore(start, end);
             start = end;
         }

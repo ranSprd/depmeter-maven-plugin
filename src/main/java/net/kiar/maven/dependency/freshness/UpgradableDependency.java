@@ -57,6 +57,15 @@ public class UpgradableDependency {
         this.dependency = dependency;
     }
 
+    public String getGroupId() {
+        return allVersions.getGroupId();
+    }
+
+    public String getArtifactId() {
+        return allVersions.getArtifactId();
+    }
+
+    
     public ArtifactVersions getAllVersions() {
         return allVersions;
     }

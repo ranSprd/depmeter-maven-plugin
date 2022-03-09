@@ -1,5 +1,6 @@
 package net.kiar.maven.dependency.freshness.metric.calculators;
 
+import java.util.ArrayList;
 import java.util.List;
 import net.kiar.maven.dependency.freshness.metric.VersionNumberDelta;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -41,9 +42,12 @@ public class VersionNumberDeltaMetricCalculator {
             return delta;
         }
         
+        // sort the versions
+        List<ArtifactVersion> workList = new ArrayList<>(newer);
+        workList.sort( new MavenVersionComparator());
+        
         ArtifactVersion start = used;
-        newer.sort(new MavenVersionComparator());
-        for(ArtifactVersion end : newer) {
+        for(ArtifactVersion end : workList) {
             delta.accumulateDelta(start, end);
             start = end;
         }

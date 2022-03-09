@@ -12,23 +12,23 @@ import org.codehaus.mojo.versions.api.ArtifactVersions;
  */
 public class UpgradableDependencies {
     
-    private final List<UpgradableDependency> allDependencies;
+    private final Map<String, List<UpgradableDependency>> allDependencies;
     
     public static UpgradableDependencies select(Map<Dependency, ArtifactVersions> dependencies) {
         
-        List<UpgradableDependency> transformed = dependencies.entrySet().stream()
+        Map<String, List<UpgradableDependency>> transformed = dependencies.entrySet().stream()
                 .map(entry -> UpgradableDependency.create(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .collect( Collectors.groupingBy( UpgradableDependency::getGroupId));
         
         return new UpgradableDependencies(transformed);
     }
     
 
-    public UpgradableDependencies(List<UpgradableDependency> list) {
-        this.allDependencies = list;
+    public UpgradableDependencies(Map<String, List<UpgradableDependency>> map) {
+        this.allDependencies = map;
     }
 
-    public List<UpgradableDependency> getAllDependencies() {
+    public Map<String, List<UpgradableDependency>> getAllDependencies() {
         return allDependencies;
     }
     
