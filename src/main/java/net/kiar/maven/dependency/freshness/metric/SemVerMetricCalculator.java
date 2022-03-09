@@ -1,5 +1,6 @@
 package net.kiar.maven.dependency.freshness.metric;
 
+import net.kiar.maven.dependency.freshness.metric.calculators.VersionSequenceNumberMetricCalculator;
 import java.util.List;
 import net.kiar.maven.dependency.freshness.UpgradableDependency;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -12,13 +13,30 @@ import org.codehaus.mojo.versions.ordering.VersionComparator;
  */
 public class SemVerMetricCalculator {
     
-    private static final VersionComparator versionComparator = new MavenVersionComparator();
-    
     private final UpgradableDependency dependency;
+    
+    private final int versionSequenceNumber;
 
     public SemVerMetricCalculator(UpgradableDependency dependency) {
         this.dependency = dependency;
+        
+        this.versionSequenceNumber = VersionSequenceNumberMetricCalculator.compute( dependency.getAllNewerVersions());
     }
+
+    /**
+     * Version Sequence Number.
+     * This simple metric computes the number of releases between 2 versions.
+     * 
+     * https://ericbouwers.github.io/papers/icse15.pdf
+     * 
+     * @return a value between 0...MAX-INT
+     */
+    public int getVersionSequenceNumber() {
+        return versionSequenceNumber;
+    }
+    
+    
+    
     
 
     public double getFreshnessMetricValue() {

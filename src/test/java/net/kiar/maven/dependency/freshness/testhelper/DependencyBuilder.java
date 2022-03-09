@@ -105,7 +105,7 @@ public class DependencyBuilder {
         return new ArtifactVersions(artifact, createArticArtifactVersions(versions), versionComparator);
     }
 
-    private static List<ArtifactVersion> createArticArtifactVersions(String... versions) {
+    public static List<ArtifactVersion> createArticArtifactVersions(String... versions) {
         if (versions == null) {
             return List.of();
         }
