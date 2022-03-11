@@ -51,7 +51,7 @@ public class UpgradableDependencyTest {
         List<ArtifactVersion> newer = underTest.getAllNewerMajorVersions();
         assertNotNull(newer);
         assertFalse(newer.isEmpty());
-        assertEquals(2, newer.size());
+        assertEquals(4, newer.size());
     }
     
     
