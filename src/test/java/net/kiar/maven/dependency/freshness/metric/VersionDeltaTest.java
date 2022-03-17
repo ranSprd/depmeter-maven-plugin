@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  *
  * @author ran
  */
-public class VersionNumberDeltaTest {
+public class VersionDeltaTest {
     
     @Test
     public void testComputeDelta() {
@@ -19,7 +19,7 @@ public class VersionNumberDeltaTest {
     
     @Test
     public void testAccumulate() {
-        VersionNumberDelta delta = new VersionNumberDelta();
+        VersionDelta delta = new VersionDelta();
         assertEquals(0, delta.getMajor());
         assertEquals(0, delta.getMinor());
         assertEquals(0, delta.getPatch());
@@ -38,7 +38,7 @@ public class VersionNumberDeltaTest {
     
     private void testDelta(String versionA, String versionB, int expectedDeltaMajor, int expectedDeltaMinor, int expectedDeltaPatch) {
         
-        VersionNumberDelta delta = VersionNumberDelta.computeDelta(new DefaultArtifactVersion(versionA), new DefaultArtifactVersion(versionB));
+        VersionDelta delta = VersionDelta.computeDelta(new DefaultArtifactVersion(versionA), new DefaultArtifactVersion(versionB));
         assertNotNull(delta);
         assertEquals(expectedDeltaMajor, delta.getMajor());
         assertEquals(expectedDeltaMinor, delta.getMinor());

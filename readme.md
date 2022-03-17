@@ -22,6 +22,13 @@ Currently the following metrics for single dependencies are implemented.
 
 ## How a overall metric is calculated
 
+### Drift Score
+
+To calculate an entire project’s score, we add up the scores of every package 
+they depend on. That includes direct dependencies: packages you add specifically. 
+But it also includes indirect dependencies which are packages included 
+by the packages you include.
+
 ## Dependency metrics for a dependency
 
 ### Version Sequence Number

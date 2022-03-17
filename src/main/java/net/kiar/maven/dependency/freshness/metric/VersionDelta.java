@@ -4,25 +4,27 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 /**
  *
+ * Contains the delta of version (normally semantic versioning) as 
+ * 3D (major, minor, patch) values.
  * @author ran
  */
-public class VersionNumberDelta {
+public class VersionDelta {
 
     private int major;
     private int minor;
     private int patch;
 
-    public VersionNumberDelta() {
+    public VersionDelta() {
         this(0, 0, 0);
     }
 
-    public VersionNumberDelta(int major, int minor, int patch) {
+    public VersionDelta(int major, int minor, int patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
     }
     
-    private VersionNumberDelta(int deltaArray[]) {
+    private VersionDelta(int deltaArray[]) {
         this(deltaArray[0], deltaArray[1], deltaArray[2]);
     }
 
@@ -59,8 +61,8 @@ public class VersionNumberDelta {
         return result;
     }
     
-    public static VersionNumberDelta computeDelta(ArtifactVersion a, ArtifactVersion b) {
-        return new VersionNumberDelta( computeDeltaArray(a, b));
+    public static VersionDelta computeDelta(ArtifactVersion a, ArtifactVersion b) {
+        return new VersionDelta( computeDeltaArray(a, b));
     }
 
 }

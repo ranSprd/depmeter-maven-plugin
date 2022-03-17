@@ -2,7 +2,7 @@ package net.kiar.maven.dependency.freshness.metric.calculators;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.kiar.maven.dependency.freshness.metric.VersionNumberDelta;
+import net.kiar.maven.dependency.freshness.metric.VersionDelta;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.codehaus.mojo.versions.ordering.MavenVersionComparator;
 
@@ -36,8 +36,8 @@ public class VersionNumberDeltaMetricCalculator {
      * 
      * @return a delta tuple as distance metric between the versions
      */
-    public static VersionNumberDelta compute(ArtifactVersion used, List<ArtifactVersion> newer) {
-        VersionNumberDelta delta = new VersionNumberDelta();
+    public static VersionDelta compute(ArtifactVersion used, List<ArtifactVersion> newer) {
+        VersionDelta delta = new VersionDelta();
         if (used == null || newer == null || newer.isEmpty()) {
             return delta;
         }

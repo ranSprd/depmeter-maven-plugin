@@ -4,21 +4,17 @@ import java.util.Map;
 import net.kiar.maven.dependency.freshness.testhelper.DependencyBuilder;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author ran
  */
-public class UpgradableDependenciesTest {
+public class MetricsCalculatorTest {
     
-    public UpgradableDependenciesTest() {
-    }
-
     @Test
-    public void testSomeMethod() {
+    public void testDrift() {
         Map<Dependency, ArtifactVersions> deps = DependencyBuilder.start()
                 .add("groupA", "a", "2", "1", "3")
                 .add("groupB", "b", "4-SNAPSHOT", "1", "3", "2-SNAPSHOT")
@@ -27,8 +23,11 @@ public class UpgradableDependenciesTest {
                 .getDependencies();
         
         UpgradableDependencies u = UpgradableDependencies.select(deps);
-        assertNotNull(u.getAllDependencies());
-        assertEquals(4, u.getAllDependencies().size());
+        MetricsCalculator metricsCalculator = MetricsCalculator.get( u);
+        System.out.println("drift score : "+metricsCalculator.overallDriftScore());
+        
+        assertEquals(2.005, metricsCalculator.overallDriftScore(), 0.0);
+        assertEquals(2.005, metricsCalculator.packageDriftScore(), 0.0);
         
     }
     

@@ -19,7 +19,7 @@ public class ArtifactDependencyMetrics {
     
     private final int versionSequenceNumber;
     private final double driftScore;
-    private final VersionNumberDelta delta;
+    private final VersionDelta delta;
 
     public ArtifactDependencyMetrics(UpgradableDependency dependency) {
         this.dependency = dependency;
@@ -53,12 +53,22 @@ public class ArtifactDependencyMetrics {
      * @return 
      */
     public double getDriftScore() {
+//        System.out.println(dependency.getGroupId() +":" +dependency.getArtifactId() +" = " +driftScore);
         return driftScore;
     }
 
-    public VersionNumberDelta getDelta() {
+    public VersionDelta getDelta() {
         return delta;
     }
+
+    public String getGroupId() {
+        return dependency.getGroupId();
+    }
+
+    public String getArtifactId() {
+        return dependency.getArtifactId();
+    }
+    
     
     
     
