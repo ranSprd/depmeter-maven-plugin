@@ -39,6 +39,14 @@ public class VersionDelta {
     public int getPatch() {
         return patch;
     }
+    
+    public void accumulate(VersionDelta delta) {
+        if (delta != null) {
+            major += delta.major;
+            minor += delta.minor;
+            patch += delta.patch;
+        }
+    }
 
     public void accumulateDelta(ArtifactVersion a, ArtifactVersion b) {
         int deltaArray[] = computeDeltaArray(a, b);
@@ -46,6 +54,13 @@ public class VersionDelta {
         minor += deltaArray[1];
         patch += deltaArray[2];
     }
+
+    @Override
+    public String toString() {
+        return "VersionDelta {" + "major=" + major + ", minor=" + minor + ", patch=" + patch + '}';
+    }
+    
+    
     
     private static int[] computeDeltaArray(ArtifactVersion a, ArtifactVersion b) {
         int result[] = new int[]{0, 0, 0};

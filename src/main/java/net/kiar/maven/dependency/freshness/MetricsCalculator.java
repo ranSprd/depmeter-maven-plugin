@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import net.kiar.maven.dependency.freshness.metric.ArtifactDependencyMetrics;
+import net.kiar.maven.dependency.freshness.metric.VersionDelta;
 
 /**
  *
@@ -57,17 +58,27 @@ public class MetricsCalculator {
      * The sum of all version sequence numbers from all artifacts.
      * @return 
      */
-    public double overallVersionSequenceCount() {
+    public int overallVersionSequenceCount() {
         return metricsByGroupId.values().stream()
                     .flatMap(list -> list.stream())
                     .mapToInt(metric -> metric.getVersionSequenceNumber())
                     .sum();
     }
     
-    public double packageVersionSequenceCount() {
+    public int packageVersionSequenceCount() {
         return metricsByGroupId.values().stream()
                     .mapToInt(list -> maxVersionSequenceNumber(list))
                     .sum();
+    }
+    
+    public VersionDelta overallVersionDelta() {
+        VersionDelta result = new VersionDelta();
+        for(List<ArtifactDependencyMetrics> l : metricsByGroupId.values()) {
+            for(ArtifactDependencyMetrics m : l) {
+                result.accumulate(m.getDelta());
+            } 
+        }
+        return result;
     }
     
     

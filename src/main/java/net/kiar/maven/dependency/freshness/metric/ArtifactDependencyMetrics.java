@@ -39,6 +39,7 @@ public class ArtifactDependencyMetrics {
      * @return a value between 0...MAX-INT
      */
     public int getVersionSequenceNumber() {
+//        System.out.println(dependency.getGroupId() +":" +dependency.getArtifactId() +" = " +versionSequenceNumber);
         return versionSequenceNumber;
     }
 

@@ -3,6 +3,7 @@ package net.kiar.maven.dependency.freshness;
 import java.util.List;
 import net.kiar.maven.dependency.freshness.testhelper.DependencyBuilder;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
@@ -54,10 +55,27 @@ public class UpgradableDependencyTest {
         assertEquals(4, newer.size());
     }
     
+    @Test
+    public void testReleaseRange() throws InvalidVersionSpecificationException {
+        VersionRange range = VersionRange.createFromVersionSpec("[1.0, 2.0.2]");
+        UpgradableDependency underTest = constructWithRange(range, "group", "artifact", "1.0", "1.0.12", "2.3", "2.4", "2.5", "3.0.1");
+        List<ArtifactVersion> newer = underTest.getAllNewerVersions();
+        assertNotNull(newer);
+        assertFalse(newer.isEmpty());
+        assertEquals(4, newer.size());
+    }
+    
     
     public static UpgradableDependency construct(String usedVersion, String groupId, String artifactId, String... versions) {
         Dependency dependency = DependencyBuilder.mockDependency(groupId, artifactId, usedVersion);
         ArtifactVersions artifactVersions = DependencyBuilder.mockVersions(groupId, artifactId, VersionRange.createFromVersion( usedVersion ), versions);
+        
+        return UpgradableDependency.create(dependency, artifactVersions);
+    }
+    
+    public static UpgradableDependency constructWithRange(VersionRange range, String groupId, String artifactId, String... versions) {
+        Dependency dependency = DependencyBuilder.mockDependency(groupId, artifactId, versions[0]);
+        ArtifactVersions artifactVersions = DependencyBuilder.mockVersions(groupId, artifactId, range, versions);
         
         return UpgradableDependency.create(dependency, artifactVersions);
     }

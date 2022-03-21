@@ -15,7 +15,6 @@ public class UpgradableDependency {
     
     private static final boolean allowSnapshots = true;
     
-    
     private final ArtifactVersions allVersions;
     private final Dependency dependency;
     

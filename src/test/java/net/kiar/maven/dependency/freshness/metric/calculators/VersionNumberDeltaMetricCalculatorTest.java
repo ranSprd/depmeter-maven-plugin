@@ -1,6 +1,5 @@
 package net.kiar.maven.dependency.freshness.metric.calculators;
 
-import net.kiar.maven.dependency.freshness.metric.calculators.VersionNumberDeltaMetricCalculator;
 import java.util.List;
 import net.kiar.maven.dependency.freshness.metric.VersionDelta;
 import net.kiar.maven.dependency.freshness.testhelper.DependencyBuilder;
