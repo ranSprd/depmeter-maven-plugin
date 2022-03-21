@@ -1,5 +1,7 @@
 package net.kiar.maven.dependency.freshness;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.stream.XMLStreamException;
+import net.kiar.maven.dependency.freshness.metric.ArtifactDependencyMetrics;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -58,13 +61,16 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
         
         logInit();
 
-        getLog().info("Hello, world from " +getProject().getArtifactId() );
-
         Set<Dependency> dependencies = new TreeSet<>(new DependencyComparator());
         dependencies.addAll(getProject().getDependencies());
 
         try {
-            logUpdates(getHelper().lookupDependenciesUpdates(dependencies, false), "Dependencies");
+            Map<Dependency, ArtifactVersions> updates = getHelper().lookupDependenciesUpdates(dependencies, false);
+            UpgradableDependencies upgradable = UpgradableDependencies.select(updates);
+            MetricsCalculator metricsCalculator = MetricsCalculator.get(upgradable);
+            logMetricsToConsole(metricsCalculator);
+            
+//            logUpdates(updates, "Dependencies");
         } catch (InvalidVersionSpecificationException | ArtifactMetadataRetrievalException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
@@ -94,6 +100,44 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
     }
     
 
+    private void logMetricsToConsole(MetricsCalculator metricsCalculator) {
+        String format = "0.000";
+        NumberFormat doubleFormatter = new DecimalFormat(format);  
+        
+        if (verbose) {
+            logLine(false, "Drift score values sorted by group and artifact");
+            
+            Map<String, List<ArtifactDependencyMetrics>> map = metricsCalculator.getMetricsByGroupId();
+            for(Map.Entry<String, List<ArtifactDependencyMetrics>> artifactsOfSameGroup : map.entrySet()) {
+                logLine(false, "  " +artifactsOfSameGroup.getKey());
+                for(ArtifactDependencyMetrics entry : artifactsOfSameGroup.getValue()) {
+                    String left = "    " +entry.getArtifactId() + " ";
+                    String right = " " +doubleFormatter.format(entry.getDriftScore());
+                    if (right.length() + left.length() + 3 > INFO_PAD_SIZE) {
+                        logLine(false, left + "...");
+                        logLine(false, StringUtils.leftPad(right, INFO_PAD_SIZE));
+
+                    } else {
+                        logLine(false, StringUtils.rightPad(left, INFO_PAD_SIZE - right.length(), ".") + right);
+                    }
+                    
+                }
+                
+            }
+        }
+        logLine(false, "");
+        logLine(false, "The following dependency freshness metrics for the entire project were calculated (zero = best value)");
+        logLine(false, " drift score " );
+        logLine(false, "               overall : " +doubleFormatter.format(metricsCalculator.overallDriftScore()) );
+        logLine(false, "               package : " +doubleFormatter.format(metricsCalculator.packageDriftScore()) );
+        logLine(false, " sequence number ");
+        logLine(false, "               overall : " +metricsCalculator.overallVersionSequenceCount());
+        logLine(false, "               package : " +metricsCalculator.packageVersionSequenceCount());
+        logLine(false, " versing number delta ");
+        logLine(false, "               overall : " +metricsCalculator.overallVersionDelta());
+        logLine(false, "               package : " +"n/a");
+    }
+    
     private void logUpdates(Map<Dependency, ArtifactVersions> updates, String section) {
         List<String> withUpdates = new ArrayList<>();
         List<String> usingCurrent = new ArrayList<>();

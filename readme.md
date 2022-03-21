@@ -4,6 +4,32 @@ This plugin is based on (or extendends) the well known [versions-maven-plugin](h
 metrics about the overall age of project dependencies. Therefor several metrics for all dependencies are collected and afterwards combined into 
 a single value.
 
+## How to use
+
+Add the plugin dependency into your pom.xml file
+
+      <plugin>
+        <groupId>net.kiar.maven</groupId>
+        <artifactId>depmeter-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </plugin>    
+
+Then you can use it on command line
+
+        mvn depmeter:dependency-metrics
+
+and get an output similar to this
+
+        The following dependency freshness metrics for the entire project were calculated (zero = best value)
+            drift score 
+                    overall : 2,510
+                    package : 0,630
+            sequence number 
+                    overall : 121
+                    package : 21
+            versing number delta 
+                    overall : VersionDelta {major=0, minor=16, patch=91}
+                    package : n/a
 
 # !!! WIP
 
