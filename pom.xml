@@ -5,7 +5,7 @@
 
     <groupId>io.github.ranSprd</groupId>
     <artifactId>depmeter-maven-plugin</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Dependency Metrics Maven Plugin</name>
@@ -43,7 +43,7 @@
         <connection>scm:git:git@github.com:ranSprd/depmeter-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:ranSprd/depmeter-maven-plugin.git</developerConnection>
         <url>https://github.com/netbeans-pojomaker/tree/${project.scm.tag}</url>
-        <tag>depmeter-maven-plugin-0.2.0</tag>
+        <tag>depmeter-maven-plugin-0.1.0-pre-release</tag>
     </scm>  
   
     <distributionManagement>
