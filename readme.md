@@ -9,7 +9,7 @@ a single value.
 Add the plugin dependency into your pom.xml file
 
       <plugin>
-        <groupId>net.kiar.maven</groupId>
+        <groupId>io.github.ranSprd</groupId>
         <artifactId>depmeter-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
       </plugin>    
