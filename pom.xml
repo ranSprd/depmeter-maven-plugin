@@ -5,7 +5,7 @@
 
     <groupId>io.github.ranSprd</groupId>
     <artifactId>depmeter-maven-plugin</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.3.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>Dependency Metrics Maven Plugin</name>
