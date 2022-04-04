@@ -40,7 +40,8 @@ jobs:
         git config user.name "GitHub Actions"
 
     - name: Publish to Apache Maven Central
-      run: mvn --batch-mode release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
+#      run: mvn --batch-mode release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn --version
       env:
         GITHUB_TOKEN: ${{ github.token }}
         MAVEN_OSSRH_USERNAME: Nagel
