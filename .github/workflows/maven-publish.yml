@@ -47,3 +47,19 @@ jobs:
         MAVEN_OSSRH_USERNAME: Nagel
         MAVEN_OSSRH_PWD: ${{ secrets.MAVEN_OSSRH_PWD }}        
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        
+  merge:
+    steps:
+    - uses: actions/checkout@v3
+        
+    - name: Configure Git user
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+
+    - name: Merge back to master
+      run: |
+          git fetch --unshallow
+          git checkout master
+          git pull
+          git 
