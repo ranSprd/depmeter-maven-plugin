@@ -67,5 +67,5 @@ jobs:
           git fetch --unshallow
           git checkout master
           git pull
-          git git rebase release master
+          git rebase release master
           git push
