@@ -9,7 +9,7 @@ on:
         - 'release'
 
 jobs:
-  central-build:
+  build:
 
     runs-on: ubuntu-latest
     permissions:
