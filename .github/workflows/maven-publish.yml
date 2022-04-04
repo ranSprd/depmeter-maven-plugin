@@ -23,7 +23,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-#        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         server-id: ossrh  # Value of the distributionManagement/repository/id field of the pom.xml
         server-username: MAVEN_OSSRH_USERNAME # env variable for username in deploy
@@ -50,8 +49,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
     - name: Publish to GitHub Packages
-      run: mvn --batch-mode deploy
+      run: mvn --batch-mode deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         
