@@ -43,7 +43,7 @@
         <connection>scm:git:git@github.com:ranSprd/depmeter-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:ranSprd/depmeter-maven-plugin.git</developerConnection>
         <url>https://github.com/netbeans-pojomaker/tree/${project.scm.tag}</url>
-        <tag>depmeter-maven-plugin-0.1.0-pre-release</tag>
+        <tag>master</tag>
     </scm>  
   
     <distributionManagement>
