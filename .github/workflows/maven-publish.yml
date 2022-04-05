@@ -72,6 +72,7 @@ jobs:
           run: |  
             git fetch --tags
             latestTag=$(git describe --tags --abbrev=0)
+            echo $latestTag
             git checkout $latestTag
 
 #        - name: Build with Maven
