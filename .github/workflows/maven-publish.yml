@@ -24,10 +24,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         server-id: github
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+#    - name: Build with Maven
+#      run: mvn -B package --file pom.xml
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -Dgpg.skip=true -P github
+      run: |
+        cat ${{ HOME }}/.m2/settings.xml
+        cat ${{ github.workspace }}/settings.xml
+#        mvn deploy -Dgpg.skip=true -P github
       env:
         GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
         
@@ -51,7 +54,7 @@ jobs:
 
     - name: Publish to Apache Maven Central
 #      run: mvn --batch-mode release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
-      run: mvn deploy
+      run: mvn --version
       env:
         GITHUB_TOKEN: ${{ github.token }}
         MAVEN_OSSRH_USERNAME: Nagel
@@ -80,25 +83,25 @@ jobs:
 #      env:
 #        GITHUB_TOKEN: ${{ github.token }}
         
-  merge:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-    needs: [build]
-
-    steps:
-    - uses: actions/checkout@v3
-        
-    - name: Configure Git user
-      run: |
-        git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
-
-    - name: Merge back to master
-      run: |
-          git fetch --unshallow
-          git checkout master
-          git pull
-          git rebase release master
-          git push
+#  merge:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#      packages: write
+#    needs: [build]
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#        
+#    - name: Configure Git user
+#      run: |
+#        git config user.email "actions@github.com"
+#        git config user.name "GitHub Actions"
+#
+#    - name: Merge back to master
+#      run: |
+#          git fetch --unshallow
+#          git checkout master
+#          git pull
+#          git rebase release master
+#          git push
