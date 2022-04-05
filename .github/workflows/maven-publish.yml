@@ -70,7 +70,7 @@ jobs:
             
 #            latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         - name: Checkout tag
-          run: git fetch --all; latestTag=$(git describe --tags --abbrev=0); echo $latestTag
+          run: git fetch --all; latestTag=$(git describe --tags `git rev-list --tags --max-count=1`); echo $latestTag
 #            git checkout $latestTag
 
 #        - name: Build with Maven
