@@ -11,7 +11,6 @@ on:
 jobs:
     
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,65 +45,65 @@ jobs:
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
     
 
-    build-tag:
-        runs-on: ubuntu-latest
-        permissions:
-          contents: read
-          packages: write
-        needs: [build]
+  build-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [build]
 
 
-        steps:
-        - uses: actions/checkout@v3
-        
-        - name: Set up JDK 17 for Github
-          uses: actions/setup-java@v3
-          with:
-            java-version: '17'
-            distribution: 'temurin'
-            server-id: github
-            settings-path: ${{ github.workspace }}
-            
-        - name: Configure Git user
-          run: |
-            git config user.email "actions@github.com"
-            git config user.name "GitHub Actions"
-            
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17 for Github
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github
+        settings-path: ${{ github.workspace }}
+
+    - name: Configure Git user
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+
 #            latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        - name: Checkout tag
-          run: |
-            git fetch --all; latestTag=$(git describe --tags `git rev-list --tags --max-count=1`); echo $latestTag
-            git checkout $latestTag
+    - name: Checkout tag
+      run: |
+        git fetch --all; latestTag=$(git describe --tags `git rev-list --tags --max-count=1`); echo $latestTag
+        git checkout $latestTag
 
 #        - name: Build with Maven
 #          run: mvn -B package --file pom.xml
-        - name: Publish to GitHub Packages 
-          run: | 
-            cat ${{ github.workspace }}/settings.xml
-            mvn --batch-mode deploy -Dgpg.skip=true -P github -s $GITHUB_WORKSPACE/settings.xml
-          env:
-            GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+    - name: Publish to GitHub Packages 
+      run: | 
+        cat ${{ github.workspace }}/settings.xml
+        mvn --batch-mode deploy -Dgpg.skip=true -P github -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
 
         
-    merge:
-        runs-on: ubuntu-latest
-        permissions:
-          contents: write
-          packages: write
-        needs: [build]
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    needs: [build]
 
-        steps:
-        - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v3
 
-        - name: Configure Git user
-          run: |
-            git config user.email "actions@github.com"
-            git config user.name "GitHub Actions"
+    - name: Configure Git user
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
 
-        - name: Merge back to master
-          run: |
-              git fetch --unshallow
-              git checkout master
-              git pull
-              git rebase release master
-              git push
+    - name: Merge back to master
+      run: |
+          git fetch --unshallow
+          git checkout master
+          git pull
+          git rebase release master
+          git push
