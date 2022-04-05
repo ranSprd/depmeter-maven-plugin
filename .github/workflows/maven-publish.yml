@@ -10,39 +10,39 @@ on:
 
 jobs:
     
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-    - uses: actions/checkout@v3
-        
-    - name: Set up JDK 17 for Maven Central
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
-        server-id: ossrh  # Value of the distributionManagement/repository/id field of the pom.xml
-        server-username: MAVEN_OSSRH_USERNAME # env variable for username in deploy
-        server-password: MAVEN_OSSRH_PWD # env variable for token in deploy        
-        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
-
-    - name: Configure Git user
-      run: |
-        git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
-
-    - name: Publish to Apache Maven Central
-      run: mvn --batch-mode release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        MAVEN_OSSRH_USERNAME: Nagel
-        MAVEN_OSSRH_PWD: ${{ secrets.MAVEN_OSSRH_PWD }}        
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+#  build:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#        
+#    - name: Set up JDK 17 for Maven Central
+#      uses: actions/setup-java@v3
+#      with:
+#        java-version: '17'
+#        distribution: 'temurin'
+#        settings-path: ${{ github.workspace }} # location for the settings.xml file
+#        server-id: ossrh  # Value of the distributionManagement/repository/id field of the pom.xml
+#        server-username: MAVEN_OSSRH_USERNAME # env variable for username in deploy
+#        server-password: MAVEN_OSSRH_PWD # env variable for token in deploy        
+#        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+#        gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+#
+#    - name: Configure Git user
+#      run: |
+#        git config user.email "actions@github.com"
+#        git config user.name "GitHub Actions"
+#
+#    - name: Publish to Apache Maven Central
+#      run: mvn --batch-mode release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
+#      env:
+#        GITHUB_TOKEN: ${{ github.token }}
+#        MAVEN_OSSRH_USERNAME: Nagel
+#        MAVEN_OSSRH_PWD: ${{ secrets.MAVEN_OSSRH_PWD }}        
+#        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
     
 
   build-tag:
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    needs: [build]
+#    needs: [build]
 
 
     steps:
@@ -72,38 +72,40 @@ jobs:
 #            latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
     - name: Checkout tag
       run: |
+        git status
         git fetch --all; latestTag=$(git describe --tags `git rev-list --tags --max-count=1`); echo $latestTag
         git checkout $latestTag
+        git status
 
 #        - name: Build with Maven
 #          run: mvn -B package --file pom.xml
-    - name: Publish to GitHub Packages 
-      run: | 
-        cat ${{ github.workspace }}/settings.xml
-        mvn --batch-mode deploy -Dgpg.skip=true -P github -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+#    - name: Publish to GitHub Packages 
+#      run: | 
+#        cat ${{ github.workspace }}/settings.xml
+#        mvn --batch-mode deploy -Dgpg.skip=true -P github -s $GITHUB_WORKSPACE/settings.xml
+#      env:
+#        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
 
         
-  merge:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-    needs: [build]
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Configure Git user
-      run: |
-        git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
-
-    - name: Merge back to master
-      run: |
-          git fetch --unshallow
-          git checkout master
-          git pull
-          git rebase release master
-          git push
+#  merge:
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#      packages: write
+#    needs: [build]
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#
+#    - name: Configure Git user
+#      run: |
+#        git config user.email "actions@github.com"
+#        git config user.name "GitHub Actions"
+#
+#    - name: Merge back to master
+#      run: |
+#          git fetch --unshallow
+#          git checkout master
+#          git pull
+#          git rebase release master
+#          git push
