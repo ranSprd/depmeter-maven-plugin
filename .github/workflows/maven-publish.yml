@@ -75,6 +75,7 @@ jobs:
         
     - name: Checkout tag
       run: |
+        git status
         git fetch --all
         latestTag=$(git tag --sort=committerdate | tail -1)
         git checkout $latestTag
