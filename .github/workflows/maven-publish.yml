@@ -56,6 +56,10 @@ jobs:
       contents: write
       packages: write
     needs: [build-central]
+    
+    env:
+      HEADER_1: "## How to get it"
+      HEADER_2: "## Changelog"
 
     steps:
     - uses: actions/checkout@v3
@@ -107,7 +111,7 @@ jobs:
       with:
         tag: ${{ env.release_tag }}
         body: |
-          ${{ HEADER_1 }}
+          ${{ env.HEADER_1 }}
           
           Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
           ```
@@ -117,16 +121,11 @@ jobs:
               <version>${{ env.release_version }}</version>
           </plugin>
           ```
-          ${{ HEADER_2 }}
+          ${{ env.HEADER_2 }}
           
           ${{ steps.create-release-notes.outputs.changelog }}
 
         token: ${{ secrets.GITHUB_TOKEN }}   
-        env:
-          HEADER_1: "## How to get it"
-          HEADER_2: "## Changelog"
-        
-
         
   merge:
     runs-on: ubuntu-latest
