@@ -87,8 +87,6 @@ jobs:
       
     - name: generate release notes
       uses: mikepenz/release-changelog-builder-action@v2.9.0
-      with:
-        toTag: ${{ env.release_tag }}
       id: create-release-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
