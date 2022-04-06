@@ -36,18 +36,18 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
 
-#    - name: Publish to Apache Maven Central
-#      run: mvn --batch-mode release:prepare release:perform -P release -s $GITHUB_WORKSPACE/settings.xml
-#      env:
-#        GITHUB_TOKEN: ${{ github.token }}
-#        MAVEN_OSSRH_USERNAME: Nagel
-#        MAVEN_OSSRH_PWD: ${{ secrets.MAVEN_OSSRH_PWD }}        
-#        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-#        
-#    - name: Push changes to Git
-#      run: |
-#        git push origin
-#        git push origin --tags
+    - name: Publish to Apache Maven Central
+      run: mvn --batch-mode release:prepare release:perform -P release -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        MAVEN_OSSRH_USERNAME: Nagel
+        MAVEN_OSSRH_PWD: ${{ secrets.MAVEN_OSSRH_PWD }}        
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        
+    - name: Push changes to Git
+      run: |
+        git push origin
+        git push origin --tags
     
 
   build-github-release:
@@ -63,7 +63,7 @@ jobs:
         fetch-depth: 0
 
     - name: generate release notes
-      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      uses: mikepenz/release-changelog-builder-action@develop
       id: create-release-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
@@ -90,7 +90,7 @@ jobs:
         
     - name: Read project version
       run: echo "release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >>$GITHUB_ENV
-      
+        
         
     - name: Publish to GitHub Packages 
       run: | 
@@ -98,26 +98,34 @@ jobs:
         echo "  "
         echo "version is : ${{ env.release_version }}:"
         echo "release tag: ${{ env.release_tag }}:"
-        echo "${{ steps.create-release-notes.outputs.changelog }}"
-#        mvn --batch-mode deploy -Dgpg.skip=true -DskipTests -P github -s $GITHUB_WORKSPACE/settings.xml
+        mvn --batch-mode deploy -Dgpg.skip=true -DskipTests -P github -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
     
-#    - name: create github release entry
-#      uses: ncipollo/release-action@v1
-#      with:
-#        tag: ${{ env.release_tag }}
-#        body: |
-#          Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
-#          ```
-#          <plugin>
-#              <groupId>io.github.ranSprd</groupId>
-#              <artifactId>depmeter-maven-plugin</artifactId>
-#              <version>${{ env.release_version }}</version>
-#          </plugin>
-#          ```
-#        token: ${{ secrets.GITHUB_TOKEN }}    
-#        
+    - name: create github release entry
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ env.release_tag }}
+        body: |
+          ${{ HEADER_1 }}
+          
+          Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
+          ```
+          <plugin>
+              <groupId>io.github.ranSprd</groupId>
+              <artifactId>depmeter-maven-plugin</artifactId>
+              <version>${{ env.release_version }}</version>
+          </plugin>
+          ```
+          ${{ HEADER_2 }}
+          
+          ${{ steps.create-release-notes.outputs.changelog }}
+
+        token: ${{ secrets.GITHUB_TOKEN }}   
+        env:
+          HEADER_1: "## How to get it"
+          HEADER_2: "## Changelog"
+        
 
         
   merge:
@@ -135,10 +143,10 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
 
-#    - name: Merge back to master
-#      run: |
-#          git fetch --unshallow
-#          git checkout master
-#          git pull
-#          git rebase release master
-#          git push origin
+    - name: Merge back to master
+      run: |
+          git fetch --unshallow
+          git checkout master
+          git pull
+          git rebase release master
+          git push origin
