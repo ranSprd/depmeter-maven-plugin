@@ -53,7 +53,7 @@ jobs:
   build-github-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     needs: [build-central]
 
@@ -93,6 +93,21 @@ jobs:
         echo "release tag: ${{ env.release_tag }}:"
       env:
         GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+    
+    - name: create github release entry
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ env.release_tag }}
+        body: |
+          Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
+          ```
+          <plugin>
+              <groupId>io.github.ranSprd</groupId>
+              <artifactId>depmeter-maven-plugin</artifactId>
+              <version>${{ env.release_version }}</version>
+          </plugin>
+          ```
+        token: ${{ secrets.GITHUB_TOKEN }}    
         
 
         
