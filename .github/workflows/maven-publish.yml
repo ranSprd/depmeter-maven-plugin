@@ -19,13 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: generate release notes
-      uses: mikepenz/release-changelog-builder-action@v2.9.0
-      id: create-release-notes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
-        
-        
     - name: Set up JDK 17 for Maven Central
       uses: actions/setup-java@v3
       with:
@@ -91,6 +84,15 @@ jobs:
         
     - name: Read project version
       run: echo "release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >>$GITHUB_ENV
+      
+    - name: generate release notes
+      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      with:
+        toTag: ${{ env.release_tag }}
+      id: create-release-notes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+      
         
     - name: Publish to GitHub Packages 
       run: | 
