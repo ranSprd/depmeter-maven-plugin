@@ -18,6 +18,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: generate release notes
+      uses: johnyherangi/create-release-notes@main
+      id: create-release-notes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        
         
     - name: Set up JDK 17 for Maven Central
       uses: actions/setup-java@v3
@@ -75,7 +82,6 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
         
-#        git fetch --all
     - name: Checkout tag
       run: |
         git status
@@ -83,24 +89,20 @@ jobs:
         git checkout $latestTag
         echo "release_tag=$latestTag" >>$GITHUB_ENV
         
-#        latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        
     - name: Read project version
       run: echo "release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >>$GITHUB_ENV
         
-
-#        - name: Build with Maven
-#          run: mvn -B package --file pom.xml
-#        mvn --batch-mode deploy -Dgpg.skip=true -DskipTests -P github -s $GITHUB_WORKSPACE/settings.xml
     - name: Publish to GitHub Packages 
       run: | 
         cat ${{ github.workspace }}/settings.xml
         echo "  "
         echo "version is : ${{ env.release_version }}:"
         echo "release tag: ${{ env.release_tag }}:"
-#      env:
-#        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
-#    
+        echo "${{ steps.create-release-notes.outputs.release-notes }}"
+#        mvn --batch-mode deploy -Dgpg.skip=true -DskipTests -P github -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+    
 #    - name: create github release entry
 #      uses: ncipollo/release-action@v1
 #      with:
@@ -115,7 +117,7 @@ jobs:
 #          </plugin>
 #          ```
 #        token: ${{ secrets.GITHUB_TOKEN }}    
-        
+#        
 
         
   merge:

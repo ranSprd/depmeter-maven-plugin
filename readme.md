@@ -11,7 +11,7 @@ Add the plugin dependency into your pom.xml file
       <plugin>
         <groupId>io.github.ranSprd</groupId>
         <artifactId>depmeter-maven-plugin</artifactId>
-        <version>0.3.1</version>
+        <version>0.4.7</version>
       </plugin>    
 
 Then you can use it on command line
