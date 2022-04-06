@@ -72,12 +72,15 @@ jobs:
       run: |
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
-
+        
     - name: Checkout tag
       run: |
-        git fetch --all; latestTag=$(git describe --tags `git rev-list --tags --max-count=1`); 
+        git fetch --all
+        latestTag=$(git tag --sort=committerdate | tail -1)
         git checkout $latestTag
         echo "release_tag=$latestTag" >>$GITHUB_ENV
+        
+#        latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         
     - name: Read project version
       run: echo "release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >>$GITHUB_ENV
@@ -89,25 +92,26 @@ jobs:
     - name: Publish to GitHub Packages 
       run: | 
         cat ${{ github.workspace }}/settings.xml
+        echo "  "
         echo "version is : ${{ env.release_version }}:"
         echo "release tag: ${{ env.release_tag }}:"
-      env:
-        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
-    
-    - name: create github release entry
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ env.release_tag }}
-        body: |
-          Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
-          ```
-          <plugin>
-              <groupId>io.github.ranSprd</groupId>
-              <artifactId>depmeter-maven-plugin</artifactId>
-              <version>${{ env.release_version }}</version>
-          </plugin>
-          ```
-        token: ${{ secrets.GITHUB_TOKEN }}    
+#      env:
+#        GITHUB_TOKEN: ${{ github.token }} # GITHUB_TOKEN is the default env for the password
+#    
+#    - name: create github release entry
+#      uses: ncipollo/release-action@v1
+#      with:
+#        tag: ${{ env.release_tag }}
+#        body: |
+#          Grab the new version from Maven central https://search.maven.org/artifact/io.github.ranSprd/depmeter-maven-plugin/${{ env.release_version }}/maven-plugin 
+#          ```
+#          <plugin>
+#              <groupId>io.github.ranSprd</groupId>
+#              <artifactId>depmeter-maven-plugin</artifactId>
+#              <version>${{ env.release_version }}</version>
+#          </plugin>
+#          ```
+#        token: ${{ secrets.GITHUB_TOKEN }}    
         
 
         
