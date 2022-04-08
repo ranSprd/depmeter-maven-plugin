@@ -30,13 +30,13 @@ jobs:
       run: mvn --batch-mode clean install -Dgpg.skip=true --file pom.xml
       
     - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.6
-      with:
-        args: >
-          -Dsonar.organization=ransprd
-          -Dsonar.projectKey=ranSprd_depmeter-maven-plugin
-          -Dsonar.python.coverage.reportPaths=coverage.xml
-          -Dsonar.verbose=true   
+      run: mvn sonar:sonar \
+          -Dsonar.organization=ransprd \
+          -Dsonar.projectKey=ranSprd_depmeter-maven-plugin \
+          -Dsonar.verbose=true \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONAR_TOKEN
+          
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
