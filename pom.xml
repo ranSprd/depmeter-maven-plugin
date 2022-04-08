@@ -99,7 +99,6 @@
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>versions-maven-plugin</artifactId>
-            <!--<version>2.9.1-SNAPSHOT</version>-->
             <version>2.9.0</version>
         </dependency>
     
@@ -173,7 +172,6 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.6.2</version>
                 <configuration>
-                    <!--<goalPrefix>foo</goalPrefix>--> 
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>

@@ -39,7 +39,6 @@ public class ArtifactDependencyMetrics {
      * @return a value between 0...MAX-INT
      */
     public int getVersionSequenceNumber() {
-//        System.out.println(dependency.getGroupId() +":" +dependency.getArtifactId() +" = " +versionSequenceNumber);
         return versionSequenceNumber;
     }
 
@@ -54,7 +53,6 @@ public class ArtifactDependencyMetrics {
      * @return 
      */
     public double getDriftScore() {
-//        System.out.println(dependency.getGroupId() +":" +dependency.getArtifactId() +" = " +driftScore);
         return driftScore;
     }
 

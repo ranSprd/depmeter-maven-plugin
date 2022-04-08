@@ -55,6 +55,9 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
      *
      */
     private static final int INFO_PAD_SIZE = 72;
+    
+    private static final String PACKAGE_STR = "               package : ";
+    private static final String OVERALL_STR = "               overall : ";
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -69,23 +72,11 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
             UpgradableDependencies upgradable = UpgradableDependencies.select(updates);
             MetricsCalculator metricsCalculator = MetricsCalculator.get(upgradable);
             logMetricsToConsole(metricsCalculator);
-            
-//            logUpdates(updates, "Dependencies");
         } catch (InvalidVersionSpecificationException | ArtifactMetadataRetrievalException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
         
     }
-
-    
-    
-//    @Override
-//    protected VersionsHelper getHelper() throws MojoExecutionException {
-//        if (versionHelper == null) {
-//            versionHelper = super.getHelper();
-//        }
-//        return versionHelper;
-//    }
 
     @Override
     public VersionsHelper getHelper() throws MojoExecutionException {
@@ -128,81 +119,16 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
         logLine(false, "");
         logLine(false, "The following dependency freshness metrics for the entire project were calculated (zero = best value)");
         logLine(false, " drift score " );
-        logLine(false, "               overall : " +doubleFormatter.format(metricsCalculator.overallDriftScore()) );
-        logLine(false, "               package : " +doubleFormatter.format(metricsCalculator.packageDriftScore()) );
+        logLine(false, OVERALL_STR +doubleFormatter.format(metricsCalculator.overallDriftScore()) );
+        logLine(false, PACKAGE_STR +doubleFormatter.format(metricsCalculator.packageDriftScore()) );
         logLine(false, " sequence number ");
-        logLine(false, "               overall : " +metricsCalculator.overallVersionSequenceCount());
-        logLine(false, "               package : " +metricsCalculator.packageVersionSequenceCount());
+        logLine(false, OVERALL_STR +metricsCalculator.overallVersionSequenceCount());
+        logLine(false, PACKAGE_STR +metricsCalculator.packageVersionSequenceCount());
         logLine(false, " versing number delta ");
-        logLine(false, "               overall : " +metricsCalculator.overallVersionDelta());
-        logLine(false, "               package : " +"n/a");
+        logLine(false, OVERALL_STR +metricsCalculator.overallVersionDelta());
+        logLine(false, PACKAGE_STR +"n/a");
     }
     
-    private void logUpdates(Map<Dependency, ArtifactVersions> updates, String section) {
-        List<String> withUpdates = new ArrayList<>();
-        List<String> usingCurrent = new ArrayList<>();
-        Iterator i = updates.values().iterator();
-        while (i.hasNext()) {
-            ArtifactVersions versions = (ArtifactVersions) i.next();
-            String left = "  " + ArtifactUtils.versionlessKey(versions.getArtifact()) + " ";
-            final String current;
-            ArtifactVersion latest;
-            if (versions.isCurrentVersionDefined()) {
-                current = versions.getCurrentVersion().toString();
-                latest = versions.getNewestUpdate(UpdateScope.ANY, allowSnapshots);
-            } else {
-                ArtifactVersion newestVersion
-                        = versions.getNewestVersion(versions.getArtifact().getVersionRange(), allowSnapshots);
-                current = versions.getArtifact().getVersionRange().toString();
-                latest = newestVersion == null ? null
-                        : versions.getNewestUpdate(newestVersion, UpdateScope.ANY, allowSnapshots);
-                if (latest != null
-                        && ArtifactVersions.isVersionInRange(latest, versions.getArtifact().getVersionRange())) {
-                    latest = null;
-                }
-            }
-            String right = " " + (latest == null ? current : current + " -> " + latest);
-            List<String> t = latest == null ? usingCurrent : withUpdates;
-            if (right.length() + left.length() + 3 > INFO_PAD_SIZE) {
-                t.add(left + "...");
-                t.add(StringUtils.leftPad(right, INFO_PAD_SIZE));
-
-            } else {
-                t.add(StringUtils.rightPad(left, INFO_PAD_SIZE - right.length(), ".") + right);
-            }
-        }
-
-        if (verbose) {
-            if (usingCurrent.isEmpty()) {
-                if (!withUpdates.isEmpty()) {
-                    logLine(false, "No dependencies in " + section + " are using the newest version.");
-                    logLine(false, "");
-                }
-            } else {
-                logLine(false, "The following dependencies in " + section + " are using the newest version:");
-                i = usingCurrent.iterator();
-                while (i.hasNext()) {
-                    logLine(false, (String) i.next());
-                }
-                logLine(false, "");
-            }
-        }
-
-        if (withUpdates.isEmpty()) {
-            if (!usingCurrent.isEmpty()) {
-                logLine(false, "No dependencies in " + section + " have newer versions.");
-                logLine(false, "");
-            }
-        } else {
-            logLine(false, "The following dependencies in " + section + " have newer versions:");
-            i = withUpdates.iterator();
-            while (i.hasNext()) {
-                logLine(false, (String) i.next());
-            }
-            logLine(false, "");
-        }
-    }
-
     /**
      * @param pom the pom to update.
      * @throws org.apache.maven.plugin.MojoExecutionException when things go wrong

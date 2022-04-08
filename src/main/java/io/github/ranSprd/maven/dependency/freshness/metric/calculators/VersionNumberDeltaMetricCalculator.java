@@ -11,6 +11,9 @@ import org.codehaus.mojo.versions.ordering.MavenVersionComparator;
  * @author ran
  */
 public class VersionNumberDeltaMetricCalculator {
+
+    private VersionNumberDeltaMetricCalculator() {
+    }
     
     /**
      * Version Number Delta.

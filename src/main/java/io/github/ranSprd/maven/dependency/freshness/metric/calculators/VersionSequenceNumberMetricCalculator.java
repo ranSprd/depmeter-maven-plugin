@@ -9,7 +9,9 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
  */
 public class VersionSequenceNumberMetricCalculator {
 
-
+    private VersionSequenceNumberMetricCalculator() {
+    }
+    
     /**
      * Calculate the Version Sequence Number. 
      * The difference between two separate versions of a dependency can be 

@@ -24,7 +24,7 @@ public class VersionDelta {
         this.patch = patch;
     }
     
-    private VersionDelta(int deltaArray[]) {
+    private VersionDelta(int[] deltaArray) {
         this(deltaArray[0], deltaArray[1], deltaArray[2]);
     }
 
@@ -49,7 +49,7 @@ public class VersionDelta {
     }
 
     public void accumulateDelta(ArtifactVersion a, ArtifactVersion b) {
-        int deltaArray[] = computeDeltaArray(a, b);
+        int[] deltaArray = computeDeltaArray(a, b);
         major += deltaArray[0];
         minor += deltaArray[1];
         patch += deltaArray[2];
@@ -63,7 +63,7 @@ public class VersionDelta {
     
     
     private static int[] computeDeltaArray(ArtifactVersion a, ArtifactVersion b) {
-        int result[] = new int[]{0, 0, 0};
+        int[] result = new int[]{0, 0, 0};
         if (a != null && b != null) {
             result[0] = Math.abs(b.getMajorVersion() - a.getMajorVersion());
             if (result[0] < 1) {

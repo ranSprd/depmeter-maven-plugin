@@ -11,6 +11,9 @@ import org.codehaus.mojo.versions.ordering.MavenVersionComparator;
  */
 public class DriftScoreCalculator {
 
+    private DriftScoreCalculator() {
+    }
+
     /**
      * Drift Score
      * The drift score metric is a weighted metric. For each version step a 
@@ -60,7 +63,9 @@ public class DriftScoreCalculator {
             return 0.1;
         } else if (a.getIncrementalVersion() != b.getIncrementalVersion()) {
             return 0.01;
-        } if (isSnapshot(a) && !isSnapshot(b)) {
+        } 
+        
+        if (isSnapshot(a) && !isSnapshot(b)) {
             return 0.005;
         }
         
