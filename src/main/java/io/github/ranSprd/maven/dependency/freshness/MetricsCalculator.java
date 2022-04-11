@@ -19,7 +19,7 @@ public class MetricsCalculator {
     public static MetricsCalculator get(UpgradableDependencies deps) {
         
         Map<String, List<ArtifactDependencyMetrics>> mapped = deps.getAllDependencies().stream()
-                .map(dep -> new ArtifactDependencyMetrics(dep))
+                .map(ArtifactDependencyMetrics::new)
                 .collect(Collectors.groupingBy(ArtifactDependencyMetrics::getGroupId));
         return new MetricsCalculator(mapped);
     }

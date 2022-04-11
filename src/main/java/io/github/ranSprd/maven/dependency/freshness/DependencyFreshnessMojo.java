@@ -29,7 +29,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * Goal which touches a timestamp file.
  */
-@Mojo(name = "dependency-metrics", defaultPhase = LifecyclePhase.PROCESS_SOURCES, requiresProject = true, requiresDirectInvocation = false, threadSafe = true)
+@Mojo(name = "dependency-metrics", defaultPhase = LifecyclePhase.PROCESS_SOURCES, requiresProject = true, threadSafe = true)
 public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
 
     /**
@@ -67,10 +67,9 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
             UpgradableDependencies upgradable = UpgradableDependencies.select(updates);
             MetricsCalculator metricsCalculator = MetricsCalculator.get(upgradable);
             logMetricsToConsole(metricsCalculator);
-        } catch (InvalidVersionSpecificationException | ArtifactMetadataRetrievalException e) {
+        } catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
-        
     }
 
     @Override
