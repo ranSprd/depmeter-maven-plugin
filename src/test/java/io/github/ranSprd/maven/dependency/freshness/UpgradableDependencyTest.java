@@ -29,6 +29,9 @@ public class UpgradableDependencyTest {
         UpgradableDependency underTest = construct("2.3", "group", "artifact", "1.0", "1.0.12", "2.3");
         assertNotNull(underTest);
         assertFalse(underTest.isUpgradable());
+        List<ArtifactVersion> newer = underTest.getAllNewerMajorVersions();
+        assertNotNull(newer);
+        assertTrue(newer.isEmpty());
     }
     
     @Test
@@ -65,6 +68,17 @@ public class UpgradableDependencyTest {
         assertFalse(newer.isEmpty());
         assertEquals(4, newer.size());
     }
+    
+    @Test
+    public void testGetter() {
+        UpgradableDependency underTest = construct("1.0.1", "group", "artifact", "1.0", "1.0");
+        
+        assertEquals("artifact", underTest.getArtifactId());
+        assertNotNull(underTest.getAllVersions());
+        assertNotNull(underTest.getDependency());
+        assertNotNull(underTest.getLatestVersion());
+    }
+    
     
     
     public static UpgradableDependency construct(String usedVersion, String groupId, String artifactId, String... versions) {
