@@ -1,6 +1,5 @@
 package io.github.ranSprd.maven.dependency.freshness;
 
-import io.github.ranSprd.maven.dependency.freshness.DependencyFreshnessMojo;
 import java.io.File;
 import java.util.Map;
 import io.github.ranSprd.maven.dependency.freshness.testhelper.DependencyBuilder;
