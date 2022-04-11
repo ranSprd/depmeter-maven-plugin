@@ -1,8 +1,10 @@
 package io.github.ranSprd.maven.dependency.freshness;
 
+import io.github.ranSprd.maven.dependency.freshness.metric.ArtifactDependencyMetrics;
 import io.github.ranSprd.maven.dependency.freshness.metric.VersionDelta;
 import java.util.Map;
 import io.github.ranSprd.maven.dependency.freshness.testhelper.DependencyBuilder;
+import java.util.List;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
 import org.junit.Test;
@@ -25,6 +27,15 @@ public class MetricsCalculatorTest {
             .add("groupA", "a", "1.0", "1.0.1", "2.1.1")
             .add("groupB", "b", "1.2.0", "1.2.1", "1.3.0", "1.0.1", "1.3.1")
             .getDependencies();
+    
+    @Test
+    public void testEmpty() {
+        UpgradableDependencies u = UpgradableDependencies.select(Map.of());
+        MetricsCalculator metricsCalculator = MetricsCalculator.get( u);
+        Map<String, List<ArtifactDependencyMetrics>> all = metricsCalculator.getMetricsByGroupId();
+        assertNotNull(all);
+        assertTrue(all.isEmpty());
+    }
     
     @Test
     public void testDrift() {
