@@ -26,14 +26,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-#    - name: Build with Maven
-#      run: mvn --batch-mode clean install -Dgpg.skip=true --file pom.xml
+    - name: Build with Maven
+      run: mvn --batch-mode clean install -Dgpg.skip=true -P analysis --file pom.xml
       
     - name: SonarCloud Scan
       run: mvn sonar:sonar -P analysis \
         -Dgpg.skip=true \
         -Dsonar.organization=ransprd -Dsonar.projectKey=ranSprd_depmeter-maven-plugin \
-        -Dsonar.coverage.jacoco.xmlReportPaths=${project.build.directory}/site/jacoco/jacoco.xml \
         -Dsonar.verbose=true -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
           
       env:
