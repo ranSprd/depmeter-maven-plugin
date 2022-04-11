@@ -2,7 +2,6 @@ package io.github.ranSprd.maven.dependency.freshness;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
 

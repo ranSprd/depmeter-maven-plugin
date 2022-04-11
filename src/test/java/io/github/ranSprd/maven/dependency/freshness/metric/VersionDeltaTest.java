@@ -20,7 +20,37 @@ public class VersionDeltaTest {
     
     @Test
     public void testAccumulate() {
+        VersionDelta delta1 = new VersionDelta();
+        delta1.accumulate(null);
+        assertEquals(0, delta1.getMajor());
+        assertEquals(0, delta1.getMinor());
+        assertEquals(0, delta1.getPatch());
+        
+        VersionDelta delta2 = new VersionDelta(0, 0, 0);
+        delta2.accumulate(new VersionDelta(2, 0, 0));
+        assertEquals(2, delta2.getMajor());
+        assertEquals(0, delta2.getMinor());
+        assertEquals(0, delta2.getPatch());
+    }
+    
+    @Test
+    public void testAccumulateDelta() {
         VersionDelta delta = new VersionDelta();
+        assertEquals(0, delta.getMajor());
+        assertEquals(0, delta.getMinor());
+        assertEquals(0, delta.getPatch());
+        
+        delta.accumulateDelta(null, null);
+        assertEquals(0, delta.getMajor());
+        assertEquals(0, delta.getMinor());
+        assertEquals(0, delta.getPatch());
+        
+        delta.accumulateDelta(new DefaultArtifactVersion("2.0.0"), null);
+        assertEquals(0, delta.getMajor());
+        assertEquals(0, delta.getMinor());
+        assertEquals(0, delta.getPatch());
+        
+        delta.accumulateDelta(null, new DefaultArtifactVersion("2.0.0"));
         assertEquals(0, delta.getMajor());
         assertEquals(0, delta.getMinor());
         assertEquals(0, delta.getPatch());
