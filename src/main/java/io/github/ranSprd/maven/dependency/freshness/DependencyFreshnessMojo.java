@@ -17,8 +17,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.stream.XMLStreamException;
 import io.github.ranSprd.maven.dependency.freshness.metric.ArtifactDependencyMetrics;
-import org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.mojo.versions.AbstractVersionsDisplayMojo;
 import org.codehaus.mojo.versions.api.ArtifactVersions;

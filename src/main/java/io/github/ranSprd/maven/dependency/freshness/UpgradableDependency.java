@@ -13,7 +13,7 @@ import org.codehaus.mojo.versions.api.UpdateScope;
  */
 public class UpgradableDependency {
     
-    private static final boolean allowSnapshots = true;
+    private static final boolean ALLOW_SNAPSHOTS = true;
     
     private final ArtifactVersions allVersions;
     private final Dependency dependency;
@@ -32,13 +32,13 @@ public class UpgradableDependency {
         UpgradableDependency result = new UpgradableDependency(dependency, versions);
         if (versions.isCurrentVersionDefined()) {
             result.setUsedVersion( versions.getCurrentVersion());
-            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, allowSnapshots));
+            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, ALLOW_SNAPSHOTS));
         } else {
             ArtifactVersion latest = null;
             final ArtifactVersion newestVersionInRange
-                    = versions.getNewestVersion(versions.getArtifact().getVersionRange(), allowSnapshots);
+                    = versions.getNewestVersion(versions.getArtifact().getVersionRange(), ALLOW_SNAPSHOTS);
             if (newestVersionInRange != null) {
-                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, allowSnapshots);
+                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, ALLOW_SNAPSHOTS);
                 if (latest != null && ArtifactVersions.isVersionInRange(latest, versions.getArtifact().getVersionRange())) {
                     latest = null;
                 }
