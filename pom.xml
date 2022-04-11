@@ -272,6 +272,9 @@
         <id>analysis</id>
         <properties>
           <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+          <sonar.organization>ransprd</sonar.organization>
+          <sonar.projectKey>ranSprd_depmeter-maven-plugin</sonar.projectKey>
+          <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         </properties>
         
         <build>
