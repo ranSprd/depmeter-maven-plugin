@@ -71,7 +71,7 @@ public class UpgradableDependencyTest {
     
     @Test
     public void testGetter() {
-        UpgradableDependency underTest = construct("1.0.1", "group", "artifact", "1.0", "1.0");
+        UpgradableDependency underTest = construct("1.0.1", "group", "artifact", "1.0", "1.0", "1.0.2");
         
         assertEquals("artifact", underTest.getArtifactId());
         assertNotNull(underTest.getAllVersions());
