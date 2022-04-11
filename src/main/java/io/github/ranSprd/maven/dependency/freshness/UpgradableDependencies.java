@@ -18,7 +18,7 @@ public class UpgradableDependencies {
         
         List<UpgradableDependency> transformed = dependencies.entrySet().stream()
                 .map(entry -> UpgradableDependency.create(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .toList();
         
         return new UpgradableDependencies(transformed);
     }

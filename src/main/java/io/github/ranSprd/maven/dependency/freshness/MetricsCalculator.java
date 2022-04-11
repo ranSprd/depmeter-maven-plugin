@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import io.github.ranSprd.maven.dependency.freshness.metric.ArtifactDependencyMetrics;
 import io.github.ranSprd.maven.dependency.freshness.metric.VersionDelta;
+import java.util.Collection;
 
 /**
  *
@@ -37,8 +38,8 @@ public class MetricsCalculator {
      */
     public double overallDriftScore() {
         return metricsByGroupId.values().stream()
-                    .flatMap(list -> list.stream())
-                    .mapToDouble(metric -> metric.getDriftScore())
+                    .flatMap(Collection::stream)
+                    .mapToDouble(ArtifactDependencyMetrics::getDriftScore)
                     .sum();
     }
     
@@ -50,7 +51,7 @@ public class MetricsCalculator {
      */
     public double packageDriftScore() {
         return metricsByGroupId.values().stream()
-                    .mapToDouble(list -> maxDriftScore(list))
+                    .mapToDouble(this::maxDriftScore)
                     .sum();
     }
     
@@ -60,14 +61,14 @@ public class MetricsCalculator {
      */
     public int overallVersionSequenceCount() {
         return metricsByGroupId.values().stream()
-                    .flatMap(list -> list.stream())
-                    .mapToInt(metric -> metric.getVersionSequenceNumber())
+                    .flatMap(Collection::stream)
+                    .mapToInt(ArtifactDependencyMetrics::getVersionSequenceNumber)
                     .sum();
     }
     
     public int packageVersionSequenceCount() {
         return metricsByGroupId.values().stream()
-                    .mapToInt(list -> maxVersionSequenceNumber(list))
+                    .mapToInt(this::maxVersionSequenceNumber)
                     .sum();
     }
     
@@ -85,14 +86,14 @@ public class MetricsCalculator {
     
     private double maxDriftScore(List<ArtifactDependencyMetrics> metrics) {
         return metrics.stream()
-                .mapToDouble(metric -> metric.getDriftScore())
+                .mapToDouble(ArtifactDependencyMetrics::getDriftScore)
                 .max()
                 .orElse(0.0);
     }
     
     private int maxVersionSequenceNumber(List<ArtifactDependencyMetrics> metrics) {
         return metrics.stream()
-                .mapToInt(metric -> metric.getVersionSequenceNumber())
+                .mapToInt(ArtifactDependencyMetrics::getVersionSequenceNumber)
                 .max()
                 .orElse(0);
     }
