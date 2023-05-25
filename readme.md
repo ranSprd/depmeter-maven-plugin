@@ -13,7 +13,7 @@ Add the plugin dependency into your pom.xml file
       <plugin>
         <groupId>io.github.ranSprd</groupId>
         <artifactId>depmeter-maven-plugin</artifactId>
-        <version>0.4.7</version>
+        <version>0.5.0</version>
       </plugin>    
 
 Then you can use it on command line
@@ -50,7 +50,6 @@ Currently the following metrics for single dependencies are implemented.
 
 ## How a overall metric is calculated
 
-### Drift Score
 
 To calculate an entire project’s score, we add up the scores of every package 
 they depend on. That includes direct dependencies: packages you add specifically. 

@@ -103,9 +103,7 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
                     } else {
                         logLine(false, StringUtils.rightPad(left, INFO_PAD_SIZE - right.length(), ".") + right);
                     }
-                    
                 }
-                
             }
         }
         logLine(false, "");
