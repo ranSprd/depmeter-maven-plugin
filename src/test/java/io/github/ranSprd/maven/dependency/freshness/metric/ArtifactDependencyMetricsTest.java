@@ -23,6 +23,10 @@ public class ArtifactDependencyMetricsTest {
         int nmbr = a.getVersionSequenceNumber();
 //        System.out.println("sequence number " +nmbr);
         assertEquals(3, nmbr);
+        assertEquals(3.0, a.getDriftScore(), 0.0001);
+        
+        assertEquals("group", a.getGroupId());
+        assertEquals("artifact", a.getArtifactId());
     }
     
     public static UpgradableDependency construct(String usedVersion, String groupId, String artifactId, String... versions) {

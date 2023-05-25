@@ -1,6 +1,8 @@
 # Dependency Metrics Maven Plugin (DepMeter)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ranSprd_depmeter-maven-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ranSprd_depmeter-maven-plugin)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ranSprd_depmeter-maven-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ranSprd_depmeter-maven-plugin) 
+[![CodeScene Code Health](https://codescene.io/projects/25468/status-badges/code-health)](https://codescene.io/projects/25468)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ranSprd/depmeter-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.ranSprd%22%20AND%20a:%22depmeter-maven-plugin%22)
 
 This plugin is based on (or extendends) the well known [versions-maven-plugin](http://www.mojohaus.org/versions-maven-plugin/). It offers some
 metrics about the overall age of project dependencies. Therefor several metrics for all dependencies are collected and afterwards combined into 
