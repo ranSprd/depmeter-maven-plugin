@@ -2,10 +2,13 @@ package io.github.ranSprd.maven.dependency.freshness;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
-import org.codehaus.mojo.versions.api.UpdateScope;
+//import org.codehaus.mojo.versions.api.UpdateScope;
+import static java.util.Optional.empty;
+import org.codehaus.mojo.versions.api.Segment;
 
 /**
  *
@@ -32,13 +35,15 @@ public class UpgradableDependency {
         UpgradableDependency result = new UpgradableDependency(dependency, versions);
         if (versions.isCurrentVersionDefined()) {
             result.setUsedVersion( versions.getCurrentVersion());
-            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, ALLOW_SNAPSHOTS));
+//            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, ALLOW_SNAPSHOTS));
+            result.setLatestVersion( versions.getNewestUpdate(empty(), ALLOW_SNAPSHOTS));
         } else {
             ArtifactVersion latest = null;
             final ArtifactVersion newestVersionInRange
                     = versions.getNewestVersion(versions.getArtifact().getVersionRange(), ALLOW_SNAPSHOTS);
             if (newestVersionInRange != null) {
-                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, ALLOW_SNAPSHOTS);
+//                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, ALLOW_SNAPSHOTS);
+                latest = versions.getNewestUpdate(newestVersionInRange, empty(), ALLOW_SNAPSHOTS);
                 if (latest != null && ArtifactVersions.isVersionInRange(latest, versions.getArtifact().getVersionRange())) {
                     latest = null;
                 }
@@ -96,7 +101,7 @@ public class UpgradableDependency {
      */
     public List<ArtifactVersion> getAllNewerVersions() {
         if (usedVersion != null) {
-            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.ANY);
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, empty(), true);
             if (result != null && result.length > 0) {
                 return Arrays.asList(result);
             }
@@ -106,7 +111,8 @@ public class UpgradableDependency {
     
     public List<ArtifactVersion> getAllNewerMajorVersions() {
         if (usedVersion != null) {
-            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.MAJOR);
+//            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, Segment.MAJOR);
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, Optional.of(Segment.MAJOR), false);
             if (result != null && result.length > 0) {
                 return Arrays.asList(result);
             }
