@@ -50,7 +50,7 @@ public class DependencyFreshnessMojoTest {
                 .getDependencies();
         
         VersionsHelper versionsHelper = mock(VersionsHelper.class);
-        when(versionsHelper.lookupDependenciesUpdates(any(), eq(false)))
+        when(versionsHelper.lookupDependenciesUpdates(any(), eq(false), eq(false)))
                             .thenReturn(deps);
 
         DependencyFreshnessMojo myMojo = (DependencyFreshnessMojo) rule.lookupConfiguredMojo(pom, "dependency-metrics");

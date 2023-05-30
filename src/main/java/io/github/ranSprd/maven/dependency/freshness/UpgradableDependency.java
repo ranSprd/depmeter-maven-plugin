@@ -16,7 +16,7 @@ import org.codehaus.mojo.versions.api.Segment;
  */
 public class UpgradableDependency {
     
-    private static final boolean ALLOW_SNAPSHOTS = true;
+    private static final boolean ALLOW_SNAPSHOTS = false;
     
     private final ArtifactVersions allVersions;
     private final Dependency dependency;

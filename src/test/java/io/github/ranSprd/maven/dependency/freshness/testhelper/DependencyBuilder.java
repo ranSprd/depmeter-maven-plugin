@@ -67,13 +67,13 @@ public class DependencyBuilder {
         return dependencies;
     }
 
-    public static Dependency mockDependency(String groupId, String artifactId, String version) {
+    public static Dependency mockDependency(String groupId, String artifactId, String usedVersion) {
         Dependency dep = mock(Dependency.class);
 
         // following mocks are not used and mockito complains
-//        when(dep.getGroupId()).thenReturn(groupId);
+        when(dep.getGroupId()).thenReturn(groupId);
 //        when(dep.getArtifactId()).thenReturn(artifactId);
-//        when(dep.getVersion()).thenReturn(version);
+//        when(dep.getVersion()).thenReturn(usedVersion);
         return dep;
     }
         
