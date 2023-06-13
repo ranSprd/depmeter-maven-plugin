@@ -214,7 +214,7 @@ public class DependencyFreshnessMojo extends AbstractVersionsDisplayMojo {
         logLine(false, " sequence number ");
         logLine(false, OVERALL_STR +metricsCalculator.overallVersionSequenceCount());
         logLine(false, PACKAGE_STR +metricsCalculator.packageVersionSequenceCount());
-        logLine(false, " versing number delta ");
+        logLine(false, " version number delta ");
         logLine(false, OVERALL_STR +metricsCalculator.overallVersionDelta());
         logLine(false, PACKAGE_STR +"n/a");
     }
