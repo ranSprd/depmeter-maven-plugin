@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class DependencyFreshnessMojoTest {
 
     @Rule
@@ -31,7 +31,7 @@ public class DependencyFreshnessMojoTest {
         protected void after() {
         }
     };
-
+    
     /**
      * @throws Exception if any
      */

@@ -1,6 +1,5 @@
 package io.github.ranSprd.maven.dependency.freshness;
 
-import io.github.ranSprd.maven.dependency.freshness.UpgradableDependency;
 import java.util.List;
 import io.github.ranSprd.maven.dependency.freshness.testhelper.DependencyBuilder;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -44,6 +43,15 @@ public class UpgradableDependencyTest {
     @Test
     public void testNewerVersionsHappyCase() {
         UpgradableDependency underTest = construct("1.0.1", "group", "artifact", "1.0", "1.0.12", "2.3");
+        List<ArtifactVersion> newer = underTest.getAllNewerVersions();
+        assertNotNull(newer);
+        assertFalse(newer.isEmpty());
+        assertEquals(2, newer.size());
+    }
+    
+    @Test
+    public void testNewerVersionsAndFilterUsedVersion() {
+        UpgradableDependency underTest = construct("1.0.1", "group", "artifact", "1.0", "1.0.1", "2.0", "2.3");
         List<ArtifactVersion> newer = underTest.getAllNewerVersions();
         assertNotNull(newer);
         assertFalse(newer.isEmpty());

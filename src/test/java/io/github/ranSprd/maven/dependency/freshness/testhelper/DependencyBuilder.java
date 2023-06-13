@@ -1,5 +1,6 @@
 package io.github.ranSprd.maven.dependency.freshness.testhelper;
 
+import io.github.ranSprd.maven.dependency.freshness.UpgradableDependency;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -113,5 +114,18 @@ public class DependencyBuilder {
                 .map(version -> new DefaultArtifactVersion(version))
                 .collect(Collectors.toList());
     }
+    
+    public static UpgradableDependency constructUpgradableDependency(String usedVersion, String groupId, String artifactId, String... versions) {
+        Dependency dependency = DependencyBuilder.mockDependency(groupId, artifactId, usedVersion);
+        ArtifactVersions artifactVersions;
+        try {   
+            artifactVersions = DependencyBuilder.mockVersions(groupId, artifactId, VersionRange.createFromVersionSpec(usedVersion ), versions);
+        } catch (Exception e) {
+            artifactVersions = DependencyBuilder.mockVersions(groupId, artifactId, VersionRange.createFromVersion( usedVersion ), versions);
+        }
+        
+        return UpgradableDependency.create(dependency, artifactVersions);
+    }
+    
 
 }
