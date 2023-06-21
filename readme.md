@@ -31,7 +31,7 @@ and get an output similar to this
             sequence number 
                     overall : 121
                     package : 21
-            versing number delta 
+            version number delta 
                     overall : VersionDelta {major=0, minor=16, patch=91}
                     package : n/a
 
@@ -126,8 +126,8 @@ Based on that, you can calculate the [_Lib years_](https://libyear.com/) of a pr
 It is defined as the sum of all _Version Release Dates_ of dependencies. 
 Usually it is given in years[3].
 
-*Unfortunately is it hard to get a release date of an artifact with the default 
-maven functionality. For that reason, this metric is not implemented yet.*
+**Unfortunately is it hard to get a release date of an artifact with the default 
+maven functionality. For that reason, this metric is not implemented yet.**
 
 ## Resources
 
