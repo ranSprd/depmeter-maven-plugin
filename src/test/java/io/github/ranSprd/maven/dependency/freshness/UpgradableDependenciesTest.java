@@ -1,6 +1,5 @@
 package io.github.ranSprd.maven.dependency.freshness;
 
-import io.github.ranSprd.maven.dependency.freshness.UpgradableDependencies;
 import java.util.Map;
 import io.github.ranSprd.maven.dependency.freshness.testhelper.DependencyBuilder;
 import org.apache.maven.model.Dependency;
@@ -30,6 +29,8 @@ public class UpgradableDependenciesTest {
         UpgradableDependencies u = UpgradableDependencies.select(deps);
         assertNotNull(u.getAllDependencies());
         assertEquals(4, u.getAllDependencies().size());
+        
+        UpgradableDependency foo = u.getAllDependencies().get(0);
         
     }
     

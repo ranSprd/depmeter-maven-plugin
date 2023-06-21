@@ -67,8 +67,9 @@ public class ArtifactDependencyMetrics {
     public String getArtifactId() {
         return dependency.getArtifactId();
     }
-    
-    
-    
+
+    public boolean isUpgradable() {
+        return dependency.isUpgradable();
+    }
     
 }

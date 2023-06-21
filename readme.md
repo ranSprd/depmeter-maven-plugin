@@ -1,6 +1,8 @@
 # Dependency Metrics Maven Plugin (DepMeter)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ranSprd_depmeter-maven-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ranSprd_depmeter-maven-plugin)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ranSprd_depmeter-maven-plugin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ranSprd_depmeter-maven-plugin) 
+[![CodeScene Code Health](https://codescene.io/projects/25468/status-badges/code-health)](https://codescene.io/projects/25468)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ranSprd/depmeter-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.ranSprd%22%20AND%20a:%22depmeter-maven-plugin%22)
 
 This plugin is based on (or extendends) the well known [versions-maven-plugin](http://www.mojohaus.org/versions-maven-plugin/). It offers some
 metrics about the overall age of project dependencies. Therefor several metrics for all dependencies are collected and afterwards combined into 
@@ -13,7 +15,7 @@ Add the plugin dependency into your pom.xml file
       <plugin>
         <groupId>io.github.ranSprd</groupId>
         <artifactId>depmeter-maven-plugin</artifactId>
-        <version>0.4.7</version>
+        <version>0.6.0</version>
       </plugin>    
 
 Then you can use it on command line
@@ -29,7 +31,7 @@ and get an output similar to this
             sequence number 
                     overall : 121
                     package : 21
-            versing number delta 
+            version number delta 
                     overall : VersionDelta {major=0, minor=16, patch=91}
                     package : n/a
 
@@ -50,7 +52,6 @@ Currently the following metrics for single dependencies are implemented.
 
 ## How a overall metric is calculated
 
-### Drift Score
 
 To calculate an entire project’s score, we add up the scores of every package 
 they depend on. That includes direct dependencies: packages you add specifically. 
@@ -125,8 +126,8 @@ Based on that, you can calculate the [_Lib years_](https://libyear.com/) of a pr
 It is defined as the sum of all _Version Release Dates_ of dependencies. 
 Usually it is given in years[3].
 
-*Unfortunately is it hard to get a release date of an artifact with the default 
-maven functionality. For that reason, this metric is not implemented yet.*
+**Unfortunately is it hard to get a release date of an artifact with the default 
+maven functionality. For that reason, this metric is not implemented yet.**
 
 ## Resources
 

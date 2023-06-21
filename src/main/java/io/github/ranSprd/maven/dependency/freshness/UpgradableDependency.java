@@ -2,10 +2,15 @@ package io.github.ranSprd.maven.dependency.freshness;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.model.Dependency;
 import org.codehaus.mojo.versions.api.ArtifactVersions;
-import org.codehaus.mojo.versions.api.UpdateScope;
+//import org.codehaus.mojo.versions.api.UpdateScope;
+import static java.util.Optional.empty;
+import java.util.stream.Collectors;
+import org.apache.maven.artifact.versioning.VersionRange;
+import org.codehaus.mojo.versions.api.Segment;
 
 /**
  *
@@ -13,7 +18,7 @@ import org.codehaus.mojo.versions.api.UpdateScope;
  */
 public class UpgradableDependency {
     
-    private static final boolean ALLOW_SNAPSHOTS = true;
+    private static final boolean ALLOW_SNAPSHOTS = false;
     
     private final ArtifactVersions allVersions;
     private final Dependency dependency;
@@ -32,14 +37,17 @@ public class UpgradableDependency {
         UpgradableDependency result = new UpgradableDependency(dependency, versions);
         if (versions.isCurrentVersionDefined()) {
             result.setUsedVersion( versions.getCurrentVersion());
-            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, ALLOW_SNAPSHOTS));
+//            result.setLatestVersion( versions.getNewestUpdate(UpdateScope.ANY, ALLOW_SNAPSHOTS));
+            result.setLatestVersion( versions.getNewestUpdate(empty(), ALLOW_SNAPSHOTS));
         } else {
             ArtifactVersion latest = null;
+            final VersionRange versionRange = versions.getArtifact().getVersionRange();
             final ArtifactVersion newestVersionInRange
-                    = versions.getNewestVersion(versions.getArtifact().getVersionRange(), ALLOW_SNAPSHOTS);
+                    = versions.getNewestVersion(versionRange, ALLOW_SNAPSHOTS);
             if (newestVersionInRange != null) {
-                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, ALLOW_SNAPSHOTS);
-                if (latest != null && ArtifactVersions.isVersionInRange(latest, versions.getArtifact().getVersionRange())) {
+//                latest = versions.getNewestUpdate(newestVersionInRange, UpdateScope.ANY, ALLOW_SNAPSHOTS);
+                latest = versions.getNewestUpdate(newestVersionInRange, empty(), ALLOW_SNAPSHOTS);
+                if (latest != null && versionRange != null && ArtifactVersions.isVersionInRange(latest, versionRange)) {
                     latest = null;
                 }
             }
@@ -87,6 +95,9 @@ public class UpgradableDependency {
     
     public void setUsedVersion(ArtifactVersion usedVersion) {
         this.usedVersion = usedVersion;
+        if (usedVersion != null && this.allVersions != null) {
+            this.allVersions.setCurrentVersion(usedVersion);
+        }
     }
     
     
@@ -96,9 +107,11 @@ public class UpgradableDependency {
      */
     public List<ArtifactVersion> getAllNewerVersions() {
         if (usedVersion != null) {
-            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.ANY);
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, empty(), ALLOW_SNAPSHOTS);
             if (result != null && result.length > 0) {
-                return Arrays.asList(result);
+                  return Arrays.stream(result)
+                          .filter(v -> !v.equals(usedVersion))
+                          .collect(Collectors.toList());
             }
         }
         return List.of();
@@ -106,7 +119,8 @@ public class UpgradableDependency {
     
     public List<ArtifactVersion> getAllNewerMajorVersions() {
         if (usedVersion != null) {
-            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, UpdateScope.MAJOR);
+//            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, Segment.MAJOR);
+            ArtifactVersion[] result = allVersions.getAllUpdates(usedVersion, Optional.of(Segment.MAJOR), false);
             if (result != null && result.length > 0) {
                 return Arrays.asList(result);
             }

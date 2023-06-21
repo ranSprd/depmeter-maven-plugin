@@ -30,6 +30,9 @@ public class DriftScoreCalculatorTest {
         assertEquals(0.0, DriftScoreCalculator.compute(
                                             new DefaultArtifactVersion("1.0.0"), 
                                        DependencyBuilder.createArticArtifactVersions("1.0.0-SNAPSHOT")), 0.0);
+        assertEquals(2.005, DriftScoreCalculator.compute(
+                                            new DefaultArtifactVersion("1"), 
+                                       DependencyBuilder.createArticArtifactVersions("2.0.0-SNAPSHOT", "3-SNAPSHOT", "3.0")), 0.0);
         
     }
     @Test
